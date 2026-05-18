@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>АтомСтрой — новые энергоблоки России</title>
+  <!-- Шрифты и иконки -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Fira Sans', sans-serif;
+      color: #333;
+      background: #fff;
+      line-height: 1.5;
+      font-size: clamp(16px, 1.2vw + 6px, 20px);
+    }
+    header, footer {
+      font-size: clamp(14px, 0.9vw + 4px, 16px);
+    }
+    :root {
+      --primary: #0054A6;
+      --dark: #003274;
+      --light-bg: #F4F6F9;
+      --white: #fff;
+      --text: #333;
+    }
+    a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+    h2 {
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: clamp(1rem, 2vw, 1.8rem);
+      text-align: center;
+    }
+    /* Шапка */
+    header {
+      background: var(--white);
+      border-bottom: 2px solid var(--primary);
+      padding: 15px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-inner {
+      padding: 0 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+    .logo i {
+      font-size: 2rem;
+      color: var(--primary);
+    }
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+    nav ul li a {
+      font-weight: 500;
+      color: var(--dark);
+      transition: color 0.2s;
+      cursor: pointer;
+      padding: 5px 0;
+      border-bottom: 2px solid transparent;
+    }
+    nav ul li a:hover,
+    nav ul li a.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      padding: clamp(8px, 1vw, 14px) clamp(18px, 2vw, 28px);
+      border-radius: 4px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+      font-size: clamp(14px, 0.9vw, 16px);
+    }
+    .btn-primary:hover {
+      background: var(--dark);
+    }
+    /* Гамбургер */
+    .menu-toggle {
+      display: none;
+      font-size: 1.8rem;
+      color: var(--dark);
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 5px;
+    }
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: block;
+      }
+      nav ul {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background: var(--white);
+        border-bottom: 2px solid var(--primary);
+        padding: 20px;
+        gap: 15px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+      }
+      nav ul.active {
+        display: flex;
+      }
+    }
+    /* Контейнер страниц */
+    .page {
+      display: none;
+      padding: clamp(24px, 4vw, 48px) clamp(24px, 4vw, 48px);
+    }
+    .page.active {
+      display: block;
+      min-height: calc(100vh - 120px);
+    }
+    #page-home.active {
+      min-height: calc(100vh - 200px);
+    }
+    #page-home.active {
+      min-height: calc(100vh - 120px);
+    }
+    /* Hero на главной */
+    #page-home.active {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 80px);
+    }
+    .hero {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
+      color: #fff;
+      padding: clamp(60px, 8vw, 100px) clamp(40px, 6vw, 80px);
+      text-align: center;
+      border-radius: 20px;
+    }
+    .hero h1 {
+      font-size: clamp(1.8rem, 4vw, 3.2rem);
+      margin-bottom: clamp(0.8rem, 1.5vw, 1.2rem);
+      font-weight: 700;
+    }
+    .hero p {
+      font-size: clamp(1rem, 1.5vw, 1.3rem);
+      margin-bottom: 2rem;
+      opacity: 0.9;
+    }
+    .quick-links {
+      display: flex;
+      justify-content: center;
+      gap: clamp(16px, 3vw, 36px);
+      flex-wrap: wrap;
+      margin-top: clamp(24px, 4vw, 50px);
+    }
+    .quick-card {
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(8px);
+      border-radius: 12px;
+      padding: clamp(24px, 3vw, 38px) clamp(20px, 2.5vw, 32px);
+      width: clamp(180px, 20vw, 240px);
+      text-align: center;
+      color: #fff;
+      transition: background 0.3s;
+      cursor: pointer;
+    }
+    .quick-card:hover {
+      background: rgba(255,255,255,0.3);
+    }
+    .quick-card i {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+    }
+    /* Секция видео карточки */
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(clamp(160px, 20vw, 260px), 1fr));
+      gap: clamp(12px, 1.5vw, 24px);
+      margin-top: clamp(16px, 2vw, 30px);
+    }
+    .video-card {
+      background: var(--light-bg);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .video-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    .video-thumb {
+      background: linear-gradient(45deg, #7a8ba6, #0054A6);
+      height: clamp(120px, 14vw, 180px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      color: #fff;
+    }
+    .video-info {
+      padding: clamp(10px, 1vw, 14px);
+    }
+    .video-info h3 {
+      color: var(--dark);
+      margin-bottom: 3px;
+      font-size: clamp(0.9rem, 1.1vw, 1.05rem);
+    }
+    .post {
+      font-weight: 500;
+      color: #555;
+      margin-bottom: 8px;
+    }
+    .duration {
+      font-size: 0.85rem;
+      color: #777;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    /* Модальное окно */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal.active {
+      display: flex;
+    }
+    .modal-content {
+      background: #fff;
+      max-width: 700px;
+      width: 90%;
+      border-radius: 8px;
+      padding: 25px;
+      position: relative;
+    }
+    .modal-close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 2rem;
+      cursor: pointer;
+      color: #333;
+    }
+    .video-placeholder {
+      background: #222;
+      color: #fff;
+      height: 250px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      border-radius: 4px;
+    }
+    .script-text {
+      margin-top: 15px;
+      font-style: italic;
+      color: #555;
+      border-left: 4px solid var(--primary);
+      padding-left: 15px;
+    }
+    /* Схема */
+    .steps {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: clamp(16px, 2vw, 30px);
+      flex-wrap: wrap;
+      margin-top: clamp(20px, 3vw, 40px);
+    }
+    .step {
+      flex: 1;
+      min-width: clamp(180px, 20vw, 240px);
+      max-width: clamp(260px, 28vw, 360px);
+      text-align: center;
+      background: #fff;
+      padding: clamp(20px, 2.5vw, 35px) clamp(12px, 1.5vw, 24px);
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .step-icon {
+      font-size: clamp(2rem, 3vw, 3rem);
+      color: var(--primary);
+      margin-bottom: clamp(10px, 1.2vw, 18px);
+    }
+    .step h3 {
+      color: var(--dark);
+      margin-bottom: 12px;
+    }
+    .arrow {
+      display: flex;
+      align-items: center;
+      font-size: 2rem;
+      color: var(--primary);
+      margin: 0 5px;
+    }
+    @media (max-width: 768px) {
+      .steps {
+        flex-direction: column;
+        align-items: center;
+      }
+      .arrow {
+        transform: rotate(90deg);
+        margin: 10px 0;
+      }
+    }
+    /* Блок строительства */
+    .build-grid {
+      display: flex;
+      gap: clamp(24px, 4vw, 48px);
+      margin-top: clamp(20px, 3vw, 40px);
+      flex-wrap: wrap;
+    }
+    .build-numbers {
+      flex: 1;
+      min-width: clamp(260px, 30vw, 340px);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .fact {
+      background: var(--light-bg);
+      padding: 20px 16px;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .fact:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .fact i {
+      font-size: 1.6rem;
+      color: var(--primary);
+    }
+    .fact strong {
+      color: var(--dark);
+      font-size: clamp(1rem, 1.2vw, 1.15rem);
+      display: block;
+    }
+    .fact span {
+      font-size: 0.92rem;
+      color: #555;
+      line-height: 1.4;
+    }
+    .build-text {
+      flex: 1;
+      min-width: 280px;
+      background: var(--light-bg);
+      padding: clamp(24px, 3vw, 36px);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 20px;
+    }
+    .build-text p {
+      font-size: clamp(0.95rem, 1.1vw, 1.05rem);
+      line-height: 1.6;
+      color: #444;
+    }
+    .build-extra {
+      margin-top: clamp(20px, 3vw, 36px);
+      text-align: center;
+      background: linear-gradient(135deg, var(--primary), var(--dark));
+      color: #fff;
+      padding: clamp(20px, 3vw, 32px) clamp(24px, 4vw, 48px);
+      border-radius: 14px;
+    }
+    .build-extra p {
+      font-size: clamp(0.92rem, 1.1vw, 1.05rem);
+      opacity: 0.92;
+      line-height: 1.5;
+    }
+    .build-extra a {
+      color: #fff;
+      text-decoration: underline;
+      font-weight: 600;
+      opacity: 0.95;
+    }
+    .build-extra a:hover {
+      opacity: 1;
+    }
+    /* FAQ аккордеон */
+    .accordion {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .accordion-item {
+      background: #fff;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+    .accordion-question {
+      padding: 18px 25px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--dark);
+      background: #fff;
+      transition: background 0.2s;
+    }
+    .accordion-question:hover {
+      background: #f0f4fa;
+    }
+    .accordion-question i {
+      transition: transform 0.3s;
+    }
+    .accordion-item.active .accordion-question i {
+      transform: rotate(180deg);
+    }
+    .accordion-answer {
+      padding: 0 25px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s;
+      background: #fff;
+    }
+    .accordion-item.active .accordion-answer {
+      padding: 15px 25px;
+      max-height: 300px;
+    }
+    /* Форма */
+    .form-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: var(--light-bg);
+      padding: 30px;
+      border-radius: 8px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+      color: var(--dark);
+    }
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-family: inherit;
+    }
+    .form-group textarea {
+      height: 100px;
+      resize: vertical;
+    }
+    .note {
+      margin-top: 15px;
+      font-size: 0.9rem;
+      color: #666;
+    }
+    /* Статистика */
+    .stats-section {
+      margin-top: 40px;
+      text-align: center;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-top: 24px;
+    }
+    .stat-card {
+      background: var(--light-bg);
+      padding: 28px 20px;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 12px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .stat-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+    }
+    .stat-card i {
+      font-size: 2.2rem;
+      color: var(--primary);
+    }
+    .stat-card h3 {
+      font-size: 1.6rem;
+      color: var(--dark);
+      line-height: 1.2;
+    }
+    .stat-card p {
+      font-size: 0.9rem;
+      color: #555;
+      line-height: 1.4;
+    }
+    @media (max-width: 900px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 500px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    /* Таймлайн */
+    .timeline {
+      max-width: 800px;
+      margin: 30px auto 0;
+      position: relative;
+      padding-left: 40px;
+    }
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 15px;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--primary);
+      border-radius: 2px;
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 28px;
+      padding-left: 20px;
+    }
+    .timeline-num {
+      position: absolute;
+      left: -33px;
+      top: 0;
+      width: 30px;
+      height: 30px;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+    .timeline-title {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--dark);
+      margin-bottom: 4px;
+    }
+    .timeline-text {
+      font-size: 0.95rem;
+      color: #555;
+      line-height: 1.5;
+    }
+    /* Статьи */
+    .articles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 28px;
+      margin-top: 24px;
+    }
+    .article-card {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+    .article-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    }
+    .article-image {
+      height: clamp(160px, 18vw, 220px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      color: #fff;
+    }
+    .article-body {
+      padding: clamp(16px, 2vw, 24px);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .article-body h3 {
+      font-size: clamp(1.1rem, 1.4vw, 1.3rem);
+      color: var(--dark);
+      line-height: 1.3;
+    }
+    .article-body p {
+      font-size: 0.92rem;
+      color: #555;
+      line-height: 1.5;
+      flex: 1;
+    }
+    .article-body a {
+      align-self: flex-start;
+    }
+    .article-full {
+      animation: fadeIn 0.3s ease;
+    }
+    .article-full h3 {
+      font-size: clamp(1.3rem, 2vw, 1.8rem);
+      color: var(--dark);
+      margin-bottom: 16px;
+    }
+    .article-full p {
+      font-size: clamp(0.95rem, 1.1vw, 1.05rem);
+      line-height: 1.7;
+      color: #444;
+      margin-bottom: 14px;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    /* Сравнение */
+    .comparison {
+      overflow-x: auto;
+      margin-top: 24px;
+    }
+    .comp-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: clamp(0.85rem, 1vw, 0.95rem);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    .comp-table thead {
+      background: var(--primary);
+      color: #fff;
+    }
+    .comp-table th {
+      padding: 14px 12px;
+      text-align: center;
+      font-weight: 600;
+    }
+    .comp-table th:first-child {
+      text-align: left;
+    }
+    .comp-table td {
+      padding: 12px;
+      text-align: center;
+      border-bottom: 1px solid #e8eaed;
+      background: #fff;
+    }
+    .comp-table td:first-child {
+      text-align: left;
+      font-weight: 500;
+      color: var(--dark);
+      white-space: nowrap;
+    }
+    .comp-table tr:last-child td {
+      border-bottom: none;
+    }
+    .comp-table tbody tr:hover td {
+      background: #f0f4fa;
+    }
+    .comp-table .good {
+      color: #0d6e3e;
+      font-weight: 600;
+    }
+    .comp-table .bad {
+      color: #b02a37;
+    }
+    @media (max-width: 600px) {
+      .comp-table td,
+      .comp-table th {
+        padding: 10px 8px;
+        font-size: 0.8rem;
+      }
+    }
+    /* Футер */
+    footer {
+      background: var(--dark);
+      color: #fff;
+      padding: 30px 0;
+      text-align: center;
+      margin-top: 20px;
+    }
+    footer .footer-content {
+      padding: 0 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 30px;
+    }
+    footer a {
+      color: #fff;
+      opacity: 0.8;
+    }
+    footer a:hover {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="logo" onclick="navigateTo('home')"><i class="fas fa-atom"></i> АтомСтрой</div>
+      <button class="menu-toggle" id="menu-toggle"><i class="fas fa-bars"></i></button>
+      <nav id="nav-menu">
+        <ul>
+          <li><a onclick="navigateTo('home')" data-page="home">Главная</a></li>
+          <li><a onclick="navigateTo('how')" data-page="how">Принцип работы</a></li>
+          <li><a onclick="navigateTo('videos')" data-page="videos">Видео</a></li>
+          <li><a onclick="navigateTo('construction')" data-page="construction">Строительство</a></li>
+          <li><a onclick="navigateTo('articles')" data-page="articles">Статьи</a></li>
+          <li><a onclick="navigateTo('faq')" data-page="faq">Вопрос‑ответ</a></li>
+          <li><a onclick="navigateTo('ask')" class="btn-primary" data-page="ask">Задать вопрос</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Страницы -->
+  <div id="page-home" class="page active">
+    <div class="hero">
+      <h1>АтомСтрой: новые энергоблоки России</h1>
+      <p>От первого бетона до пуска — 6–7 лет. Технологии поколения 3+ с пассивной безопасностью</p>
+      <div class="quick-links">
+        <div class="quick-card" onclick="navigateTo('how')">
+          <i class="fas fa-atom"></i>
+          <h3>Как работает АЭС</h3>
+        </div>
+        <div class="quick-card" onclick="navigateTo('videos')">
+          <i class="fas fa-video"></i>
+          <h3>Видеоинструкции</h3>
+        </div>
+        <div class="quick-card" onclick="navigateTo('construction')">
+          <i class="fas fa-hard-hat"></i>
+          <h3>Строительство</h3>
+        </div>
+      </div>
+    </div>
+    <section class="stats-section">
+      <h2>Росатом в цифрах</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <i class="fas fa-industry"></i>
+          <h3>7 энергоблоков</h3>
+          <p>строится одновременно в России и за рубежом</p>
+        </div>
+        <div class="stat-card">
+          <i class="fas fa-calendar-check"></i>
+          <h3>60+ лет</h3>
+          <p>проектный срок службы</p>
+        </div>
+        <div class="stat-card">
+          <i class="fas fa-globe"></i>
+          <h3>19 стран</h3>
+          <p>используют технологии Росатома</p>
+        </div>
+        <div class="stat-card">
+          <i class="fas fa-shield-halved"></i>
+          <h3>0 аварий</h3>
+          <p>на энергоблоках поколения 3+</p>
+        </div>
+      </div>
+    </section>
+    <div style="text-align:center; margin-top:30px;">
+      <p>Остались вопросы? <a onclick="navigateTo('ask')" style="cursor:pointer; font-weight:600;">Спросите эксперта</a></p>
+    </div>
+  </div>
+
+  <div id="page-videos" class="page">
+    <h2>Видеоинструкции от сотрудников</h2>
+    <div class="video-grid">
+      <div class="video-card" onclick="openModal('Алексей, начальник смены', 'Управляю реактором ВВЭР-1200. В активной зоне 163 тепловыделяющих сборки. Топливо — диоксид урана в герметичных оболочках из циркониевого сплава. Регулирование цепной реакции — органами управления и борной кислотой. Контроль нейтронного потока идёт непрерывно. Реактор и системы первого контура находятся внутри герметичной железобетонной оболочки.')">
+        <div class="video-thumb"><i class="fas fa-play-circle"></i></div>
+        <div class="video-info">
+          <h3>Реакторное отделение</h3>
+          <div class="post">Алексей, начальник смены</div>
+          <div class="duration"><i class="far fa-clock"></i> 30 сек.</div>
+        </div>
+      </div>
+      <div class="video-card" onclick="openModal('Ольга, инженер турбинного цеха', 'Ольга. Инженер турбинного цеха. Отвечаю за турбину К-1200. Она работает на насыщенном паре второго контура. Частота вращения 3000 оборотов в минуту. Пар вырабатывается в парогенераторах, куда подаётся вода первого контура. Контуры разделены. Передача тепла — через стенки трубок парогенератора. Прямого контакта сред нет.')">
+        <div class="video-thumb"><i class="fas fa-play-circle"></i></div>
+        <div class="video-info">
+          <h3>Машинный зал</h3>
+          <div class="post">Ольга, инженер турбинного цеха</div>
+          <div class="duration"><i class="far fa-clock"></i> 30 сек.</div>
+        </div>
+      </div>
+      <div class="video-card" onclick="openModal('Дмитрий, эколог', 'Дмитрий. Эколог. Градирня охлаждает воду третьего контура. Третий контур забирает тепло от второго через конденсатор. Вода третьего контура не контактирует ни с реактором, ни с парогенератором. Испарение — физический процесс без химических реагентов. Данные автоматического контроля радиационного фона передаются на внешний публичный ресурс каждые 15 минут.')">
+        <div class="video-thumb"><i class="fas fa-play-circle"></i></div>
+        <div class="video-info">
+          <h3>Градирня</h3>
+          <div class="post">Дмитрий, эколог</div>
+          <div class="duration"><i class="far fa-clock"></i> 30 сек.</div>
+        </div>
+      </div>
+      <div class="video-card" onclick="openModal('Сергей, руководитель проекта', 'Я Сергей. Руковожу проектом сооружения новых энергоблоков. Сейчас в России одновременно строятся энергоблоки поколения 3+ с реакторами ВВЭР-1200 и ВВЭР-ТОИ. Проектный срок службы — 60 лет с возможностью продления. В конструкции заложена ловушка расплава и пассивные системы отвода тепла. Применяется поточный метод строительства: монтаж оборудования идёт параллельно с возведением конструкций. Весь цикл от первого бетона до пуска занимает 6-7 лет.')">
+        <div class="video-thumb"><i class="fas fa-play-circle"></i></div>
+        <div class="video-info">
+          <h3>Строительство новых АЭС</h3>
+          <div class="post">Сергей, руководитель проекта</div>
+          <div class="duration"><i class="far fa-clock"></i> 30 сек.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="page-how" class="page">
+    <h2>Принцип работы АЭС за 3 шага</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-icon"><i class="fas fa-atom"></i></div>
+        <h3>Реактор → Пар</h3>
+        <p>Ядерная реакция нагревает воду первого контура. Тепло передаётся во второй контур через парогенератор. Контуры разделены металлом трубок.</p>
+      </div>
+      <div class="arrow"><i class="fas fa-arrow-right"></i></div>
+      <div class="step">
+        <div class="step-icon"><i class="fas fa-cog"></i></div>
+        <h3>Турбина → Электричество</h3>
+        <p>Пар второго контура вращает турбину (3000 об/мин). Генератор вырабатывает электроэнергию. Второй контур изолирован от первого.</p>
+      </div>
+      <div class="arrow"><i class="fas fa-arrow-right"></i></div>
+      <div class="step">
+        <div class="step-icon"><i class="fas fa-cloud"></i></div>
+        <h3>Градирня → Охлаждение</h3>
+        <p>Вода третьего контура охлаждается в градирне за счёт испарения. Третий контур не контактирует с реакторной водой. Пар — дистиллят.</p>
+      </div>
+    </div>
+    <h2 style="margin-top: 50px;">Сравнение АЭС, ТЭС и ГЭС</h2>
+    <div class="comparison">
+      <table class="comp-table">
+        <thead>
+          <tr>
+            <th>Параметр</th>
+            <th><i class="fas fa-atom"></i> АЭС</th>
+            <th><i class="fas fa-fire"></i> ТЭС</th>
+            <th><i class="fas fa-water"></i> ГЭС</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Выбросы CO₂</td>
+            <td class="good">0 г/кВт·ч</td>
+            <td class="bad">~500–900 г/кВт·ч</td>
+            <td class="good">0 г/кВт·ч</td>
+          </tr>
+          <tr>
+            <td>КПД</td>
+            <td>33–35%</td>
+            <td>35–45%</td>
+            <td>85–90%</td>
+          </tr>
+          <tr>
+            <td>Занимаемая площадь</td>
+            <td>~3 км² (1 ГВт)</td>
+            <td>~2 км² (1 ГВт)</td>
+            <td>~50–500 км²</td>
+          </tr>
+          <tr>
+            <td>Срок службы</td>
+            <td>60+ лет</td>
+            <td>30–40 лет</td>
+            <td>50–100 лет</td>
+          </tr>
+          <tr>
+            <td>Зависимость от погоды</td>
+            <td class="good">Нет</td>
+            <td class="good">Нет</td>
+            <td class="bad">Да (засуха)</td>
+          </tr>
+          <tr>
+            <td>Топливо</td>
+            <td>Уран (1 г = 300 кг нефти)</td>
+            <td>Газ, уголь, мазут</td>
+            <td>Вода (бесплатно)</td>
+          </tr>
+          <tr>
+            <td>Мощность блока</td>
+            <td>~1200 МВт</td>
+            <td>~300–800 МВт</td>
+            <td>~100–1000 МВт</td>
+          </tr>
+          <tr>
+            <td>Время строительства</td>
+            <td>6–7 лет</td>
+            <td>3–4 года</td>
+            <td>5–10 лет</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="page-construction" class="page">
+    <h2>Строительство новых АЭС: факты</h2>
+    <div class="build-grid">
+      <div class="build-numbers">
+        <div class="fact">
+          <i class="fas fa-clock"></i>
+          <strong>6–7 лет</strong>
+          <span>от первого бетона до энергопуска</span>
+        </div>
+        <div class="fact">
+          <i class="fas fa-calendar-alt"></i>
+          <strong>60 лет</strong>
+          <span>проектный срок службы</span>
+        </div>
+        <div class="fact">
+          <i class="fas fa-industry"></i>
+          <strong>4 энергоблока</strong>
+          <span>сооружаются одновременно в России</span>
+        </div>
+        <div class="fact">
+          <i class="fas fa-shield-alt"></i>
+          <strong>Поколение 3+</strong>
+          <span>пассивные системы безопасности (72 часа без оператора)</span>
+        </div>
+      </div>
+      <div class="build-text">
+        <p>Сооружение ведётся поточным методом: монтаж оборудования идёт параллельно с бетонированием. В проекте заложена ловушка расплава, двойная гермооболочка, гидроёмкости системы аварийного охлаждения.</p>
+        <a href="#" class="btn-primary">Подробнее о проекте</a>
+      </div>
+    </div>
+    <h2 style="margin-top: 40px;">Этапы строительства</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-num">1</div>
+        <div class="timeline-title">Подготовка площадки</div>
+        <div class="timeline-text">Выравнивание территории, укрепление грунта, подвод инженерных коммуникаций</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-num">2</div>
+        <div class="timeline-title">Первый бетон</div>
+        <div class="timeline-text">Заливка фундаментной плиты реакторного отделения. Официальный старт строительства</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-num">3</div>
+        <div class="timeline-title">Монтаж реактора</div>
+        <div class="timeline-text">Установка корпуса реактора, парогенераторов и главного циркуляционного трубопровода</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-num">4</div>
+        <div class="timeline-title">Физический пуск</div>
+        <div class="timeline-text">Загрузка ядерного топлива и вывод реактора на минимально контролируемый уровень мощности</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-num">5</div>
+        <div class="timeline-title">Энергопуск</div>
+        <div class="timeline-text">Начало выработки электроэнергии и включение в единую энергосистему страны</div>
+      </div>
+    </div>
+    <div class="build-extra">
+      <p><i class="fas fa-radiation" style="margin-right: 10px;"></i> Данные о радиационном фоне с площадок строительства доступны онлайн через систему АСКРО. <a href="https://www.russianatom.ru">Ссылка на публичный портал</a></p>
+    </div>
+  </div>
+
+  <div id="page-faq" class="page">
+    <h2>Часто задаваемые вопросы</h2>
+    <div class="accordion">
+      <div class="accordion-item">
+        <div class="accordion-question">Контролируется ли радиация при строительстве? <i class="fas fa-chevron-down"></i></div>
+        <div class="accordion-answer">На всех площадках установлены посты АСКРО. Данные обновляются каждые 15 минут и публикуются в открытом доступе. Фон соответствует естественному.</div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-question">Что с отработавшим топливом? <i class="fas fa-chevron-down"></i></div>
+        <div class="accordion-answer">ОЯТ хранится в пристанционных бассейнах выдержки, затем отправляется на переработку. Технологии замкнутого цикла разрабатываются в рамках проекта "Прорыв".</div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-question">Как защищены новые блоки от аварий? <i class="fas fa-chevron-down"></i></div>
+        <div class="accordion-answer">Энергоблоки поколения 3+ имеют пассивные системы отвода тепла, которые работают без электричества и оператора. Ловушка расплава предотвращает выход кориума за пределы гермооболочки.</div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-question">Сколько стоит строительство одного энергоблока? <i class="fas fa-chevron-down"></i></div>
+        <div class="accordion-answer">Стоимость сооружения энергоблока ВВЭР-1200 составляет около 5-6 млрд долларов в зависимости от площадки и условий.</div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-question">Где сейчас строятся новые блоки? <i class="fas fa-chevron-down"></i></div>
+        <div class="accordion-answer">Активные проекты: Курская АЭС-2, Ленинградская АЭС-2, АЭС 'Аккую' (Турция), АЭС 'Руппур' (Бангладеш), АЭС 'Эль-Дабаа' (Египет).</div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-question">Какие преимущества у ВВЭР-1200 перед предыдущими поколениями? <i class="fas fa-chevron-down"></i></div>
+        <div class="accordion-answer">Повышенная мощность (1200 МВт), улучшенная экономика, пассивные системы безопасности, работающие без вмешательства оператора, и пониженное образование отходов.</div>
+      </div>
+    </div>
+    <p style="text-align:center; margin-top:30px;">Не нашли ответ? <a onclick="navigateTo('ask')" style="cursor:pointer; font-weight:600;">Задайте вопрос эксперту</a></p>
+  </div>
+
+  <div id="page-articles" class="page">
+    <h2>Статьи об атомной энергетике</h2>
+    <div class="articles-grid" id="articles-grid">
+      <div class="article-card">
+        <div class="article-image" style="background: linear-gradient(135deg, #0054A6, #1a7ad4);">
+          <i class="fas fa-book-open"></i>
+        </div>
+        <div class="article-body">
+          <h3>История атомной энергетики в России</h3>
+          <p>Первая в мире АЭС была запущена в Обнинске в 1954 году. С тех пор Россия прошла путь от первых реакторов до современных ВВЭР-1200 поколения 3+. Узнайте, как развивалась атомная отрасль — от советских проектов до сегодняшних технологий.</p>
+          <button class="btn-primary" onclick="openArticle(0)">Читать далее</button>
+        </div>
+      </div>
+      <div class="article-card">
+        <div class="article-image" style="background: linear-gradient(135deg, #0d6e3e, #28a869);">
+          <i class="fas fa-shield-alt"></i>
+        </div>
+        <div class="article-body">
+          <h3>Безопасность АЭС: мифы и реальность</h3>
+          <p>Современные энергоблоки поколения 3+ оснащены пассивными системами безопасности, которые работают без электричества и вмешательства оператора. Разбираем главные мифы о радиации и защите реакторов и рассказываем, как устроена многоуровневая система безопасности.</p>
+          <button class="btn-primary" onclick="openArticle(1)">Читать далее</button>
+        </div>
+      </div>
+      <div class="article-card">
+        <div class="article-image" style="background: linear-gradient(135deg, #7a2e8e, #b45fd0);">
+          <i class="fas fa-rocket"></i>
+        </div>
+        <div class="article-body">
+          <h3>Будущее: реакторы IV поколения</h3>
+          <p>Россия разрабатывает реакторы на быстрых нейтронах (БН-1200) и замкнутый ядерный топливный цикл в рамках проекта «Прорыв». Эти технологии позволят многократно использовать отработавшее топливо и значительно сократить количество радиоактивных отходов.</p>
+          <button class="btn-primary" onclick="openArticle(2)">Читать далее</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="article-full" class="article-full" style="display:none;">
+      <button class="btn-primary" onclick="closeArticle()" style="margin-bottom: 24px;">← Назад к списку</button>
+      <div id="article-content"></div>
+    </div>
+  </div>
+
+  <div id="page-ask" class="page">
+    <h2>Остались вопросы?</h2>
+    <div class="form-container">
+      <form id="question-form">
+        <div class="form-group">
+          <label for="name">Имя</label>
+          <input type="text" id="name" required>
+        </div>
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" required>
+        </div>
+        <div class="form-group">
+          <label for="question">Ваш вопрос</label>
+          <textarea id="question" required></textarea>
+        </div>
+        <button type="submit" class="btn-primary">Отправить</button>
+      </form>
+      <p class="note">Ведущие инженеры и экологи ответят в течение трёх рабочих дней. Самые частые вопросы будут опубликованы на этой странице.</p>
+    </div>
+  </div>
+
+  <!-- Модальное окно видео -->
+  <div class="modal" id="video-modal">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal()">&times;</span>
+      <div class="video-placeholder">
+        <i class="fas fa-video" style="margin-right: 10px;"></i> Видео скоро будет доступно
+      </div>
+      <h3 id="modal-title"></h3>
+      <div class="script-text" id="modal-script"></div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-content">
+      <a href="https://rosatom.ru">Официальный сайт Росатома</a>
+      <div>© 2026 АтомСтрой</div>
+    </div>
+  </footer>
+
+  <script>
+    // --- Навигация между страницами ---
+    const pages = {
+      home: document.getElementById('page-home'),
+      how: document.getElementById('page-how'),
+      videos: document.getElementById('page-videos'),
+      construction: document.getElementById('page-construction'),
+      faq: document.getElementById('page-faq'),
+      articles: document.getElementById('page-articles'),
+      ask: document.getElementById('page-ask')
+    };
+    const navLinks = document.querySelectorAll('nav a[data-page]');
+
+    function navigateTo(pageId) {
+      // Скрываем все страницы
+      Object.values(pages).forEach(p => p.classList.remove('active'));
+      // Показываем нужную
+      if (pages[pageId]) {
+        pages[pageId].classList.add('active');
+      }
+      // Обновляем активный пункт меню
+      navLinks.forEach(link => {
+        const linkPage = link.getAttribute('data-page');
+        if (linkPage === pageId) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+      // Обновляем хеш в адресной строке
+      window.location.hash = pageId;
+      // Закрываем мобильное меню
+      document.getElementById('nav-menu').querySelector('ul').classList.remove('active');
+      // Прокрутка вверх
+      window.scrollTo(0, 0);
+    }
+
+    // Обработка хеша при загрузке
+    function handleHash() {
+      const hash = window.location.hash.substring(1);
+      if (hash && pages[hash]) {
+        navigateTo(hash);
+      } else {
+        navigateTo('home');
+      }
+    }
+
+    window.addEventListener('hashchange', handleHash);
+    window.addEventListener('load', handleHash);
+
+    // Мобильное меню
+    const menuToggle = document.getElementById('menu-toggle');
+    const navMenuUl = document.getElementById('nav-menu').querySelector('ul');
+    menuToggle.addEventListener('click', () => {
+      navMenuUl.classList.toggle('active');
+    });
+
+    // Модальное окно видео
+    function openModal(title, script) {
+      document.getElementById('modal-title').textContent = title;
+      document.getElementById('modal-script').textContent = script;
+      document.getElementById('video-modal').classList.add('active');
+    }
+    function closeModal() {
+      document.getElementById('video-modal').classList.remove('active');
+    }
+    window.onclick = function(event) {
+      if (event.target == document.getElementById('video-modal')) {
+        closeModal();
+      }
+    }
+
+    // Аккордеон FAQ
+    document.querySelectorAll('.accordion-question').forEach(q => {
+      q.addEventListener('click', () => {
+        const item = q.parentElement;
+        item.classList.toggle('active');
+      });
+    });
+
+    // Обработка формы
+    document.getElementById('question-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Спасибо! Ваш вопрос отправлен. Мы ответим в течение трёх рабочих дней.');
+      this.reset();
+    });
+
+    // --- Статьи ---
+    const articlesData = [
+      {
+        title: 'История атомной энергетики в России',
+        content: `<p>27 июня 1954 года в городе Обнинске Калужской области была запущена первая в мире атомная электростанция — Обнинская АЭС. Её электрическая мощность составляла всего 5 МВт, но именно она доказала возможность промышленного использования атомной энергии для выработки электричества.</p>
+<p>В 1964 году был пущен первый энергоблок Белоярской АЭС, а в 1973 году — Ленинградской АЭС с реакторами РБМК-1000. Советский Союз активно развивал атомную энергетику: к 1986 году в стране работали 15 энергоблоков общей мощностью около 12 ГВт.</p>
+<p>Современный этап развития атомной энергетики России связан с реакторами ВВЭР-1200 поколения 3+. Первые энергоблоки этого типа — Нововоронежская АЭС-2 (2016 год) и Ленинградская АЭС-2 (2018 год) — стали флагманами отечественной атомной отрасли. ВВЭР-1200 сочетает повышенную мощность, улучшенные экономические показатели и пассивные системы безопасности, способные работать без вмешательства оператора.</p>
+<p>Сегодня Росатом одновременно сооружает 7 энергоблоков в России и за рубежом, включая проекты в Турции (АЭС «Аккую»), Бангладеш (АЭС «Руппур»), Египте (АЭС «Эль-Дабаа») и Белоруссии (Белорусская АЭС). Каждый новый блок строится с применением поточного метода, что позволяет сократить сроки сооружения до 6–7 лет от первого бетона до энергопуска.</p>`
+      },
+      {
+        title: 'Безопасность АЭС: мифы и реальность',
+        content: `<p>Атомная энергетика — одна из самых безопасных отраслей промышленности. Современные энергоблоки поколения 3+ имеют многоуровневую систему защиты, основанную на принципе «глубокоэшелонированной обороны». Рассмотрим основные мифы и факты.</p>
+<p><strong>Миф 1: АЭС могут взорваться как ядерная бомба.</strong> Реальность: ядерное топливо (диоксид урана) имеет концентрацию делящегося изотопа всего 3–5%, что делает цепную реакцию управляемой. Физически невозможно получить ядерный взрыв на реакторе ВВЭР.</p>
+<p><strong>Миф 2: Радиация постоянно выходит за пределы станции.</strong> Реальность: на всех АЭС ведётся непрерывный контроль радиационного фона. Автоматизированная система контроля радиационной обстановки (АСКРО) передаёт данные в онлайн-режиме каждые 15 минут. Фон на границе санитарно-защитной зоны не превышает естественных значений.</p>
+<p><strong>Миф 3: Отработавшее топливо невозможно безопасно хранить.</strong> Реальность: отработавшее ядерное топливо (ОЯТ) хранится в специальных пристанционных бассейнах выдержки, а затем отправляется на переработку. Россия разрабатывает технологии замкнутого ядерного топливного цикла в рамках проекта «Прорыв», который позволит многократно использовать топливо.</p>
+<p>Энергоблоки поколения 3+ оснащены пассивными системами отвода тепла, которые работают без электричества и вмешательства оператора в течение 72 часов. Ловушка расплава под корпусом реактора исключает выход материалов за пределы гермооболочки даже в гипотетической аварии.</p>`
+      },
+      {
+        title: 'Будущее: реакторы IV поколения',
+        content: `<p>Россия является мировым лидером в разработке реакторных технологий IV поколения. Ключевое направление — реакторы на быстрых нейтронах и замкнутый ядерный топливный цикл (ЗЯТЦ), реализуемые в рамках проекта «Прорыв».</p>
+<p>В 2015 году был успешно запущен реактор БН-800 на Белоярской АЭС — крупнейший в мире реактор на быстрых нейтронах с натриевым теплоносителем. Его мощность — 880 МВт(э). БН-800 способен работать в уран-плутониевом топливном цикле, утилизируя плутоний из отработавшего топлива.</p>
+<p>Следующий шаг — строительство реактора БРЕСТ-ОД-300 (Опытно-демонстрационный) в городе Северске Томской области. Этот реактор со свинцовым теплоносителем станет частью опытно-демонстрационного энергокомплекса (ОДЭК), который впервые в мире продемонстрирует замкнутый ядерный топливный цикл в промышленном масштабе.</p>
+<p>Преимущества ЗЯТЦ: многократное использование топлива (коэффициент использования природного урана вырастет с 1% до 95%), значительное сокращение объёмов радиоактивных отходов (выгорание наиболее опасных долгоживущих изотопов), снижение риска распространения ядерных материалов.</p>
+<p>Планируется, что после успешной эксплуатации БРЕСТ-ОД-300 и отработки технологий на ОДЭК, Россия приступит к строительству коммерческих реакторов IV поколения мощностью 1200 МВт, что обеспечит страну практически неисчерпаемым источником энергии на тысячи лет.</p>`
+      }
+    ];
+
+    function openArticle(index) {
+      const article = articlesData[index];
+      const container = document.getElementById('article-content');
+      container.innerHTML = '<h3>' + article.title + '</h3>' + article.content;
+      document.getElementById('articles-grid').style.display = 'none';
+      document.getElementById('article-full').style.display = 'block';
+    }
+
+    function closeArticle() {
+      document.getElementById('articles-grid').style.display = 'grid';
+      document.getElementById('article-full').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
